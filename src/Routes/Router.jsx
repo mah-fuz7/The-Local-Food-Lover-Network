@@ -6,6 +6,7 @@ import AddReview from "../Pages/AddReview";
 import MyReview from "../Pages/MyReview";
 import SignUp from "../Pages/SignUp";
 import Error from "../Pages/Error";
+import Login from "../Pages/Login";
 
 const router = createBrowserRouter([
  {
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
         },
         {
             path:"login",
-            element:<login></login>
+            element:<Login></Login>
         },
     ]
  }
