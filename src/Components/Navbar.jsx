@@ -1,9 +1,8 @@
 
-
 const Navbar = () => {
     return (
         <div>
-           <h1>Hey,i'm Your Navbar!</h1> 
+            <h1>Hey! i'm Navbar</h1>
         </div>
     );
 };
