@@ -7,6 +7,7 @@ import MyReview from "../Pages/MyReview";
 import SignUp from "../Pages/SignUp";
 import Error from "../Pages/Error";
 import Login from "../Pages/Login";
+import Favorite from "../Pages/Favorite";
 
 const router = createBrowserRouter([
  {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         },
         {
             path:"favorite",
-            element:<favorite></favorite>
+            element:<Favorite></Favorite>
         },
         {
             path:"signup",
