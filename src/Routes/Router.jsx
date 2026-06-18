@@ -8,6 +8,8 @@ import SignUp from "../Pages/SignUp";
 import Error from "../Pages/Error";
 import Login from "../Pages/Login";
 import Favorite from "../Pages/Favorite";
+import EditReview from "../Pages/EditReview";
+import ReviewDetails from "../Pages/ReviewDetails";
 
 const router = createBrowserRouter([
  {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
         {
             path:"login",
             element:<Login></Login>
+        },
+        {
+            path:"editreview",
+            element:<EditReview></EditReview>
+        },
+        {
+            path:"reviewdetails/:id",
+            element:<ReviewDetails></ReviewDetails>
         },
     ]
  }
