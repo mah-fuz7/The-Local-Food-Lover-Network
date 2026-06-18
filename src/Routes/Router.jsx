@@ -46,7 +46,7 @@ const router = createBrowserRouter([
             element:<Login></Login>
         },
         {
-            path:"editreview",
+            path:"editreview/:id",
             element:<EditReview></EditReview>
         },
         {
