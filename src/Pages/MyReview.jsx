@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router";
+import { toast } from "react-toastify";
 
 const MyReview = () => {
   const axiosSecure = useAxiosSecure();
@@ -12,7 +13,6 @@ const MyReview = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    // setLoading(true);
 
     axiosSecure
       .get(`/users/reviews?email=${user.email}`)
@@ -26,135 +26,141 @@ const MyReview = () => {
       });
   }, [user?.email, axiosSecure]);
 
+  // handle delete button
+  const handleDelete = async(id)=>{
+try{
+  const res=await axiosSecure.delete(`/reviews/${id}`)
+   if (res.data?.success) {
+        toast.success("Deleted successfully");
+        // optionally refresh UI here
+        setReviews((prev)=>prev.filter((r)=>r._id !== id))
+      }
+
+}catch (error) {
+      toast.error("Delete failed");
+      console.log(error);
+    }
+  }
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-orange-500">
-          My Reviews{" "}
-          <span className="text-orange-500">({reviews.length})</span>
+        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-orange-500">
+          My Reviews ({reviews.length})
         </h1>
       </div>
 
-      {/* Table Card */}
-      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  SL No
-                </th>
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-x-auto">
+        <table className="min-w-[750px] w-full">
+          <thead>
+            <tr className="bg-slate-50 border-b border-slate-200">
+              {/* SL No */}
+              <th className="px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                SL
+              </th>
 
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  Food Image
-                </th>
+              {/* Food Image (hidden on sm) */}
+              <th className="hidden md:table-cell px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                Food Image
+              </th>
 
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  Food Name
-                </th>
+              {/* Food Name */}
+              <th className="px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                Food Name
+              </th>
 
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  Restaurant Name
-                </th>
+              {/* Restaurant (hidden on sm) */}
+              <th className="hidden md:table-cell px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                Restaurant
+              </th>
 
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  Rating
-                </th>
+              {/* Rating (hidden on sm) */}
+              <th className="hidden lg:table-cell px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                Rating
+              </th>
 
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  Posted Date
-                </th>
+              {/* Date (hidden on sm) */}
+              <th className="hidden lg:table-cell px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                Date
+              </th>
 
-                <th className="text-left text-[11px] font-semibold text-slate-400 uppercase tracking-widest px-5 py-3">
-                  Actions
-                </th>
+              {/* Actions always visible */}
+              <th className="px-3 py-3 text-left text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-slate-100">
+            {loading ? (
+              <tr>
+                <td colSpan={7} className="text-center py-10 text-gray-500">
+                  Loading...
+                </td>
               </tr>
-            </thead>
+            ) : reviews.length > 0 ? (
+              reviews.map((review, index) => (
+                <tr key={review._id} className="hover:bg-slate-50">
+                  {/* SL No */}
+                  <td className="px-3 py-4 text-sm font-semibold text-slate-600">
+                    {index + 1}
+                  </td>
 
-            <tbody className="divide-y divide-slate-100">
-              {loading ? (
-                <tr>
-                  <td
-                    colSpan={7}
-                    className="text-center py-10 text-slate-500"
-                  >
-                    Loading...
+                  {/* Food Image */}
+                  <td className="hidden md:table-cell px-3 py-4">
+                    <img
+                      src={review.foodImg}
+                      alt={review.foodName}
+                      className="w-10 h-10 md:w-12 md:h-12 rounded-lg object-cover"
+                    />
+                  </td>
+
+                  {/* Food Name */}
+                  <td className="px-3 py-4 text-sm font-semibold text-slate-800">
+                    {review.foodName}
+                  </td>
+
+                  {/* Restaurant */}
+                  <td className="hidden md:table-cell px-3 py-4 text-sm text-slate-600">
+                    {review.restaurantName}
+                  </td>
+
+                  {/* Rating */}
+                  <td className="hidden lg:table-cell px-3 py-4 text-sm text-orange-600 font-semibold">
+                    ⭐ {review.rating}
+                  </td>
+
+                  {/* Date */}
+                  <td className="hidden lg:table-cell px-3 py-4 text-sm text-slate-600">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </td>
+
+                  {/* Actions */}
+                  <td className="px-3 py-4">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Link
+                        to={`/editreview/${review._id}`}
+                        className="text-xs px-3 py-2 bg-orange-500 text-white rounded-lg text-center hover:bg-orange-600"
+                      >
+                        Update
+                      </Link>
+
+                      <button onClick={()=>handleDelete(review._id)} className="text-xs px-3 py-2 border border-red-300 text-red-500 rounded-lg hover:bg-red-500 hover:text-white">
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
-              ) : reviews.length > 0 ? (
-                reviews.map((review, index) => (
-                  <tr
-                    key={review._id}
-                    className="hover:bg-slate-50 transition-colors"
-                  >
-                    {/* SL No */}
-                    <td className="px-5 py-4 text-sm font-semibold text-slate-600">
-                      {index + 1}
-                    </td>
-
-                    {/* Food Image */}
-                    <td className="px-5 py-4">
-                      <img
-                        src={review.foodImg}
-                        alt={review.foodName}
-                        className="w-14 h-14 rounded-lg object-cover"
-                      />
-                    </td>
-
-                    {/* Food Name */}
-                    <td className="px-5 py-4">
-                      <p className="font-semibold text-slate-800">
-                        {review.foodName}
-                      </p>
-                    </td>
-
-                    {/* Restaurant Name */}
-                    <td className="px-5 py-4">
-                      <p className="text-slate-600">
-                        {review.restaurantName}
-                      </p>
-                    </td>
-
-                    {/* Rating */}
-                    <td className="px-5 py-4">
-                      <span className="inline-flex items-center px-3 py-1   text-orange-600 text-sm font-medium">
-                        {review.rating}
-                      </span>
-                    </td>
-
-                    {/* Posted Date */}
-                    <td className="px-5 py-4 text-slate-600">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-2">
-                        <Link to={`/editreview/${review._id}`} className="text-xs font-semibold px-3 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors">
-                          Update
-                        </Link>
-
-                        <button className="text-xs font-semibold px-3 py-2 rounded-lg border border-red-300 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={7}
-                    className="px-5 py-16 text-center text-sm text-slate-400"
-                  >
-                    No reviews found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} className="text-center py-10 text-gray-400">
+                  No reviews found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

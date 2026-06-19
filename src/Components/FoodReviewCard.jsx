@@ -2,8 +2,34 @@ import { FiHeart } from 'react-icons/fi';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { HiArrowSmallRight } from "react-icons/hi2";
+import useAuth from '../Hooks/useAuth';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
+import { toast } from 'react-toastify';
 
 const FoodReviewCard = ({review}) => {
+const {user}=useAuth()
+const useAxios=useAxiosSecure()
+
+// handle favorite 
+const handleFavorite =async(id) =>{
+  console.log(id,user)
+
+  const favoriteData ={
+    reviewId:id,
+    userEmail:user.email,
+    createdAt:new Date(),
+
+  };
+  const res=await useAxios.post("/favorite",favoriteData);
+  if(res.data.success){
+    toast.success("Added to favorites❤️")
+  }else{
+    toast.info(res.data.message)
+  }
+}
+
+
+
   // console.log(review)
   const{_id,description,foodName,foodImg,restaurantName,location,rating,reviewText,reviewerName}=review;
 
@@ -37,7 +63,10 @@ const FoodReviewCard = ({review}) => {
         
         {/* Heart Icon */}
         <button
-          onClick={() => setIsFavorite(!isFavorite)}
+       onClick={() => {
+  handleFavorite(_id);
+  setIsFavorite(!isFavorite);
+}}
           className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
         >
           <FiHeart
