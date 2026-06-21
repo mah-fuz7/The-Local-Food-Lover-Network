@@ -10,6 +10,7 @@ import Login from "../Pages/Login";
 import Favorite from "../Pages/Favorite";
 import EditReview from "../Pages/EditReview";
 import ReviewDetails from "../Pages/ReviewDetails";
+import PrivareRoute from "../Private/PrivareRoute";
 
 const router = createBrowserRouter([
  {
@@ -27,15 +28,21 @@ const router = createBrowserRouter([
         },
         {
             path:"addreview",
-            element:<AddReview></AddReview>
+            element:<PrivareRoute>
+                <AddReview></AddReview>
+            </PrivareRoute>
         },
         {
             path:"myreview",
-            element:<MyReview></MyReview>
+            element:<PrivareRoute>
+                <MyReview></MyReview>
+            </PrivareRoute>
         },
         {
             path:"favorite",
-            element:<Favorite></Favorite>
+            element:<PrivareRoute>
+                <Favorite></Favorite>
+            </PrivareRoute>
         },
         {
             path:"signup",

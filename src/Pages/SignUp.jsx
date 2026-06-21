@@ -1,10 +1,11 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
+  const navigate=useNavigate()
   const {
     signInWithGoogle,
     registerUser,
@@ -19,7 +20,8 @@ const SignUp = () => {
   // HANDLE GOOGLE SIGN IN
   const handleGoogleSignIn = () => {
     signInWithGoogle().then(() => {
-      toast.success("Login successful");
+      // toast.success("Login successful");
+      navigate('/')
     });
   };
 
@@ -50,7 +52,8 @@ const SignUp = () => {
 
       console.log(user);
 
-      toast.success("Sign Up Successfully");
+      // toast.success("Sign Up Successfully");
+      navigate('/')
       e.target.reset();
     } catch (error) {
       console.log(error.message);

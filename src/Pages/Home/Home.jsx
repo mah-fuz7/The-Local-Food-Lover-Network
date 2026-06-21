@@ -30,7 +30,7 @@ const Home = () => {
       <Banner />
 
       <div className="max-w-7xl mx-auto px-4 py-10">
-        <p className="text-4xl font-bold text-orange-600 mb-4 text-center">Latest Review : {reviews.length}</p>
+        <p className="text-4xl font-bold text-orange-600 mb-4 text-center">Latest Review ({reviews.length})</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
           
           {loading
