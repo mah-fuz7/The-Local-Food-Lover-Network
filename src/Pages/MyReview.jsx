@@ -27,22 +27,6 @@ const MyReview = () => {
   }, [user?.email, axiosSecure]);
 
   // handle delete button
-  
-  
-//   const handleDelete = async(id)=>{
-// try{
-//   const res=await axiosSecure.delete(`/reviews/${id}`)
-//    if (res.data?.success) {
-//         toast.success("Deleted successfully");
-//         // optionally refresh UI here
-//         setReviews((prev)=>prev.filter((r)=>r._id !== id))
-//       }
-
-// }catch (error) {
-//       toast.error("Delete failed");
-//       console.log(error);
-//     }
-//   }
 const handleDelete = async(id) => {
   
   Swal.fire({

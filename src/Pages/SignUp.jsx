@@ -26,40 +26,48 @@ const SignUp = () => {
   };
 
   // HANDLE EMAIL PASSWORD SIGN UP
-  const handleEmailPassSignIn = async (e) => {
-    e.preventDefault();
+const handleEmailPassSignIn = async (e) => {
+  e.preventDefault();
 
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const confirmPassword = e.target.confirmPassword.value;
-    const url = e.target.url.value;
+  const name = e.target.name.value;
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+  const confirmPassword = e.target.confirmPassword.value;
+  const url = e.target.url.value;
 
-    if (password !== confirmPassword) {
-      return toast.error("Passwords do not match");
-    }
+  // Password Match Check
+  if (password !== confirmPassword) {
+    return toast.error("Passwords do not match");
+  }
 
-    try {
-      const result = await registerUser(email, password);
+  // Regex Validation
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
-      await updateUserProfile(name, url);
+  if (!passwordRegex.test(password)) {
+    return toast.error(
+      "Password must contain at least 1 uppercase letter, 1 lowercase letter, and be at least 6 characters long."
+    );
+  }
 
-      setUser({
-        ...result.user,
-        displayName: name,
-        photoURL: url,
-      });
+  try {
+    const result = await registerUser(email, password);
 
-      console.log(user);
+    await updateUserProfile(name, url);
 
-      // toast.success("Sign Up Successfully");
-      navigate('/')
-      e.target.reset();
-    } catch (error) {
-      console.log(error.message);
-      toast.error(error.message);
-    }
-  };
+    setUser({
+      ...result.user,
+      displayName: name,
+      photoURL: url,
+    });
+
+    toast.success("Sign Up Successfully");
+    navigate("/");
+    e.target.reset();
+  } catch (error) {
+    console.log(error.message);
+    toast.error(error.message);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 p-4">

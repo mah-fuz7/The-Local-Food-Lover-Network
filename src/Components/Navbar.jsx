@@ -9,7 +9,7 @@ const Navbar = () => {
   const {user,logout,deleteCurrentUser}=useAuth()
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-    
+    console.log(user)
     const [theme, setTheme] = useState(
         () => localStorage.getItem("theme") || "light"
     );
