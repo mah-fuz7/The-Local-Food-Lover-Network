@@ -11,7 +11,7 @@ const SignUp = () => {
     registerUser,
     updateUserProfile,
     setUser,
-    user,
+    
   } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
