@@ -30,27 +30,34 @@ const Favorite = () => {
 
   
 //Remove favorite data
-const handleDelete=(id)=>{
-    Swal.fire({
-  title: "Are you sure?",
-  text: "You won't be able to revert this!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  confirmButtonText: "Yes, delete it!"
-}).then((result) => {
-  if (result.isConfirmed) 
-    axiosSecure.delete(`/favorite/${id}`)
-setFavorites((prev)=>prev.filter((f)=>f._id !== id))
-    
-    Swal.fire({
-    title: "Removed!",
-    text: "Your file has been Removed.",
-    icon: "success"
+const handleDelete = (id) => {
+  
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Remove it!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      const res = await axiosSecure.delete(`/favorite/${id}`);
+
+      if (res.data.data.deletedCount > 0) {
+        setFavorites((prev) =>
+          prev.filter((f) => String(f._id) !== String(id))
+        );
+
+        Swal.fire({
+          title: "Removed!",
+          text: "Your file has been removed.",
+          icon: "success",
+        });
+      }
+    }
   });
-});
-}
+};
   return (
     <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-6">
       {/* Header */}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const MyReview = () => {
   const axiosSecure = useAxiosSecure();
@@ -27,20 +27,50 @@ const MyReview = () => {
   }, [user?.email, axiosSecure]);
 
   // handle delete button
-  const handleDelete = async(id)=>{
-try{
-  const res=await axiosSecure.delete(`/reviews/${id}`)
-   if (res.data?.success) {
-        toast.success("Deleted successfully");
-        // optionally refresh UI here
-        setReviews((prev)=>prev.filter((r)=>r._id !== id))
-      }
+  
+  
+//   const handleDelete = async(id)=>{
+// try{
+//   const res=await axiosSecure.delete(`/reviews/${id}`)
+//    if (res.data?.success) {
+//         toast.success("Deleted successfully");
+//         // optionally refresh UI here
+//         setReviews((prev)=>prev.filter((r)=>r._id !== id))
+//       }
 
-}catch (error) {
-      toast.error("Delete failed");
-      console.log(error);
+// }catch (error) {
+//       toast.error("Delete failed");
+//       console.log(error);
+//     }
+//   }
+const handleDelete = async(id) => {
+  
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Delete it!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+  const res=await axiosSecure.delete(`/reviews/${id}`)
+
+      if (res.data.data.deletedCount > 0) {
+               setReviews((prev)=>prev.filter((r)=>r._id !== id))
+
+
+        Swal.fire({
+          title: "Delete!",
+          text: "Your Review has been Deleted.",
+          icon: "success",
+        });
+      }
     }
-  }
+  });
+};
+
   return (
     <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-6">
       {/* Header */}
