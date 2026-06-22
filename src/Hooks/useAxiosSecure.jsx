@@ -5,7 +5,7 @@ import useAuth from "./useAuth";
 
 // Axios instance (create once)
 const instance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://the-local-food-lover-network-server.onrender.com",
 });
 
 const useAxiosSecure = () => {
